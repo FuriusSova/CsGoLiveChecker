@@ -34,14 +34,14 @@ const sendPrice = async (ctx) => {
 }
 
 const saveInfo = async (price, caseName) => {
-    if(!openedCases[caseName]) {
+    if (!openedCases[caseName]) {
         openedCases[caseName] = 1;
     } else {
         openedCases[caseName] += 1;
     }
     allOpenedCases++;
 
-    if(caseName != "Daily Case"){
+    if (caseName != "Daily Case") {
         sumPrice += price;
     }
 }
@@ -80,19 +80,15 @@ const getPrice = async (url) => {
 }
 
 bot.start(async (ctx) => {
-    if (ctx.message.from.username == 'dream_161' || ctx.message.from.username == 'Furius16'){
-        if (!startParcing) {
-            await ctx.reply('Парсинг начался')
-            await getPrice('https://www.csgolive.com/home')
-            sendPrice(ctx)
-            startParcing = true;
-            minutes = new Date(Date.now()).toLocaleTimeString("uk-UA", { timeZone: 'Europe/Kiev' }).slice(0,-3).slice(3);
-            hours = new Date(Date.now()).toLocaleTimeString("uk-UA", { timeZone: 'Europe/Kiev' }).slice(0,-3).slice(0, 2);
-        } else {
-            ctx.reply('Парсинг уже идёт')
-        }
+    if (!startParcing) {
+        await ctx.reply('Парсинг начался')
+        await getPrice('https://www.csgolive.com/home')
+        sendPrice(ctx)
+        startParcing = true;
+        minutes = new Date(Date.now()).toLocaleTimeString("uk-UA", { timeZone: 'Europe/Kiev' }).slice(0, -3).slice(3);
+        hours = new Date(Date.now()).toLocaleTimeString("uk-UA", { timeZone: 'Europe/Kiev' }).slice(0, -3).slice(0, 2);
     } else {
-        ctx.reply('Ты не начальник')
+        ctx.reply('Парсинг уже идёт')
     }
 });
 
